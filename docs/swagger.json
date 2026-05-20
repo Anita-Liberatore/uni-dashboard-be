@@ -1,0 +1,523 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "REST API backend for the university student dashboard.",
+        "title": "Uni Dashboard API",
+        "contact": {
+            "name": "Anita Liberatore",
+            "email": "anita.liberatore@studenti.unito.it"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/students/{studentId}": {
+            "get": {
+                "description": "Returns the complete profile for the given student",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Get student profile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Student ID (e.g. S1234567)",
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.Student"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapters_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/{studentId}/academic": {
+            "get": {
+                "description": "Returns GPA, credits, courses progress and degree details",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Get academic record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Student ID (e.g. S1234567)",
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.AcademicRecord"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapters_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/{studentId}/calendar": {
+            "get": {
+                "description": "Returns scheduled events (exams, deadlines, lectures) ordered by date asc",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Get calendar events",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Student ID (e.g. S1234567)",
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.CalendarEvent"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapters_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/{studentId}/documents": {
+            "get": {
+                "description": "Returns all documents uploaded by the student",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "List documents",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Student ID (e.g. S1234567)",
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.Document"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapters_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/{studentId}/exams": {
+            "get": {
+                "description": "Returns the full list of exams passed by the student, ordered by date desc",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exams"
+                ],
+                "summary": "List passed exams",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Student ID (e.g. S1234567)",
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.Exam"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapters_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/{studentId}/exams/upcoming": {
+            "get": {
+                "description": "Returns exams the student is yet to sit, ordered by date asc",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exams"
+                ],
+                "summary": "List upcoming exams",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Student ID (e.g. S1234567)",
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.UpcomingExam"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapters_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/{studentId}/study-plan": {
+            "get": {
+                "description": "Returns the full study plan grouped by academic year",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Get study plan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Student ID (e.g. S1234567)",
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.YearPlan"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapters_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.AcademicRecord": {
+            "type": "object",
+            "properties": {
+                "courses": {
+                    "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.ProgressPair"
+                },
+                "credits": {
+                    "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.ProgressPair"
+                },
+                "degree": {
+                    "type": "string"
+                },
+                "electives": {
+                    "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.ProgressPair"
+                },
+                "faculty": {
+                    "type": "string"
+                },
+                "gpa": {
+                    "type": "number"
+                },
+                "program": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.CalendarEvent": {
+            "type": "object",
+            "properties": {
+                "course": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "room": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.EventType"
+                },
+                "urgent": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.Course": {
+            "type": "object",
+            "properties": {
+                "credits": {
+                    "type": "integer"
+                },
+                "grade": {
+                    "type": "integer"
+                },
+                "lode": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "passed": {
+                    "type": "boolean"
+                },
+                "semester": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.Document": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.EventType": {
+            "type": "string",
+            "enum": [
+                "Exam",
+                "Deadline",
+                "Lecture"
+            ],
+            "x-enum-varnames": [
+                "EventTypeExam",
+                "EventTypeDeadline",
+                "EventTypeLecture"
+            ]
+        },
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.Exam": {
+            "type": "object",
+            "properties": {
+                "area": {
+                    "type": "string"
+                },
+                "course": {
+                    "type": "string"
+                },
+                "credits": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "grade": {
+                    "type": "integer"
+                },
+                "lode": {
+                    "type": "boolean"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.ProgressPair": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.Student": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "advisor": {
+                    "type": "string"
+                },
+                "area": {
+                    "type": "string"
+                },
+                "birthDate": {
+                    "type": "string"
+                },
+                "birthPlace": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "enrolledSince": {
+                    "type": "string"
+                },
+                "graduationDate": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pec": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "semester": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "studentId": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "taxCode": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.UpcomingExam": {
+            "type": "object",
+            "properties": {
+                "course": {
+                    "type": "string"
+                },
+                "credits": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "urgent": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_liberatoreanita_uni-dashboard-be_internal_domain.YearPlan": {
+            "type": "object",
+            "properties": {
+                "courses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.Course"
+                    }
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_adapters_http.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "something went wrong"
+                }
+            }
+        }
+    }
+}

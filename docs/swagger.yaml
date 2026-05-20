@@ -1,0 +1,347 @@
+basePath: /api/v1
+definitions:
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.AcademicRecord:
+    properties:
+      courses:
+        $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.ProgressPair'
+      credits:
+        $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.ProgressPair'
+      degree:
+        type: string
+      electives:
+        $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.ProgressPair'
+      faculty:
+        type: string
+      gpa:
+        type: number
+      program:
+        type: string
+    type: object
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.CalendarEvent:
+    properties:
+      course:
+        type: string
+      date:
+        type: string
+      room:
+        type: string
+      time:
+        type: string
+      type:
+        $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.EventType'
+      urgent:
+        type: boolean
+    type: object
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.Course:
+    properties:
+      credits:
+        type: integer
+      grade:
+        type: integer
+      lode:
+        type: boolean
+      name:
+        type: string
+      passed:
+        type: boolean
+      semester:
+        type: integer
+    type: object
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.Document:
+    properties:
+      date:
+        type: string
+      name:
+        type: string
+      size:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.EventType:
+    enum:
+    - Exam
+    - Deadline
+    - Lecture
+    type: string
+    x-enum-varnames:
+    - EventTypeExam
+    - EventTypeDeadline
+    - EventTypeLecture
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.Exam:
+    properties:
+      area:
+        type: string
+      course:
+        type: string
+      credits:
+        type: integer
+      date:
+        type: string
+      grade:
+        type: integer
+      lode:
+        type: boolean
+      year:
+        type: integer
+    type: object
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.ProgressPair:
+    properties:
+      current:
+        type: integer
+      total:
+        type: integer
+    type: object
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.Student:
+    properties:
+      address:
+        type: string
+      advisor:
+        type: string
+      area:
+        type: string
+      birthDate:
+        type: string
+      birthPlace:
+        type: string
+      email:
+        type: string
+      enrolledSince:
+        type: string
+      graduationDate:
+        type: string
+      name:
+        type: string
+      pec:
+        type: string
+      phone:
+        type: string
+      semester:
+        type: integer
+      status:
+        type: string
+      studentId:
+        type: string
+      surname:
+        type: string
+      taxCode:
+        type: string
+      year:
+        type: integer
+    type: object
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.UpcomingExam:
+    properties:
+      course:
+        type: string
+      credits:
+        type: integer
+      date:
+        type: string
+      urgent:
+        type: boolean
+    type: object
+  github_com_liberatoreanita_uni-dashboard-be_internal_domain.YearPlan:
+    properties:
+      courses:
+        items:
+          $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.Course'
+        type: array
+      year:
+        type: integer
+    type: object
+  internal_adapters_http.ErrorResponse:
+    properties:
+      error:
+        example: something went wrong
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: anita.liberatore@studenti.unito.it
+    name: Anita Liberatore
+  description: REST API backend for the university student dashboard.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Uni Dashboard API
+  version: "1.0"
+paths:
+  /students/{studentId}:
+    get:
+      description: Returns the complete profile for the given student
+      parameters:
+      - description: Student ID (e.g. S1234567)
+        in: path
+        name: studentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.Student'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_adapters_http.ErrorResponse'
+      summary: Get student profile
+      tags:
+      - students
+  /students/{studentId}/academic:
+    get:
+      description: Returns GPA, credits, courses progress and degree details
+      parameters:
+      - description: Student ID (e.g. S1234567)
+        in: path
+        name: studentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.AcademicRecord'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_adapters_http.ErrorResponse'
+      summary: Get academic record
+      tags:
+      - students
+  /students/{studentId}/calendar:
+    get:
+      description: Returns scheduled events (exams, deadlines, lectures) ordered by
+        date asc
+      parameters:
+      - description: Student ID (e.g. S1234567)
+        in: path
+        name: studentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.CalendarEvent'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_adapters_http.ErrorResponse'
+      summary: Get calendar events
+      tags:
+      - students
+  /students/{studentId}/documents:
+    get:
+      description: Returns all documents uploaded by the student
+      parameters:
+      - description: Student ID (e.g. S1234567)
+        in: path
+        name: studentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.Document'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_adapters_http.ErrorResponse'
+      summary: List documents
+      tags:
+      - students
+  /students/{studentId}/exams:
+    get:
+      description: Returns the full list of exams passed by the student, ordered by
+        date desc
+      parameters:
+      - description: Student ID (e.g. S1234567)
+        in: path
+        name: studentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.Exam'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_adapters_http.ErrorResponse'
+      summary: List passed exams
+      tags:
+      - exams
+  /students/{studentId}/exams/upcoming:
+    get:
+      description: Returns exams the student is yet to sit, ordered by date asc
+      parameters:
+      - description: Student ID (e.g. S1234567)
+        in: path
+        name: studentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.UpcomingExam'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_adapters_http.ErrorResponse'
+      summary: List upcoming exams
+      tags:
+      - exams
+  /students/{studentId}/study-plan:
+    get:
+      description: Returns the full study plan grouped by academic year
+      parameters:
+      - description: Student ID (e.g. S1234567)
+        in: path
+        name: studentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_liberatoreanita_uni-dashboard-be_internal_domain.YearPlan'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_adapters_http.ErrorResponse'
+      summary: Get study plan
+      tags:
+      - students
+schemes:
+- http
+swagger: "2.0"
