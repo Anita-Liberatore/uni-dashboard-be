@@ -1,19 +1,27 @@
 package httpadapter
 
-import "net/http"
+import (
+	"net/http"
+
+	httpSwagger "github.com/swaggo/http-swagger/v2"
+)
 
 // NewRouter wires all routes onto a standard ServeMux (Go 1.22+).
 // Method-qualified patterns ("GET /path") prevent accidental wrong-method hits.
 func NewRouter(h *Handler) http.Handler {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /api/v1/me",                 h.GetProfile)
-	mux.HandleFunc("GET /api/v1/me/academic",        h.GetAcademic)
-	mux.HandleFunc("GET /api/v1/me/exams",           h.GetExamsPassed)
-	mux.HandleFunc("GET /api/v1/me/exams/upcoming",  h.GetExamsUpcoming)
-	mux.HandleFunc("GET /api/v1/me/study-plan",      h.GetStudyPlan)
-	mux.HandleFunc("GET /api/v1/me/documents",       h.GetDocuments)
-	mux.HandleFunc("GET /api/v1/me/calendar",        h.GetCalendar)
+	// ── Student endpoints ────────────────────────────────────────────────────
+	mux.HandleFunc("GET /api/v1/students/{studentId}",                h.GetStudent)
+	mux.HandleFunc("GET /api/v1/students/{studentId}/academic",       h.GetAcademic)
+	mux.HandleFunc("GET /api/v1/students/{studentId}/exams",          h.GetExamsPassed)
+	mux.HandleFunc("GET /api/v1/students/{studentId}/exams/upcoming", h.GetExamsUpcoming)
+	mux.HandleFunc("GET /api/v1/students/{studentId}/study-plan",     h.GetStudyPlan)
+	mux.HandleFunc("GET /api/v1/students/{studentId}/documents",      h.GetDocuments)
+	mux.HandleFunc("GET /api/v1/students/{studentId}/calendar",       h.GetCalendar)
+
+	// ── Swagger UI ───────────────────────────────────────────────────────────
+	mux.Handle("GET /swagger/", httpSwagger.WrapHandler)
 
 	return withCORS(mux)
 }

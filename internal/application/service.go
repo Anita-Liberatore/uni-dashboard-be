@@ -35,30 +35,30 @@ func NewStudentService(
 	}
 }
 
-func (s *StudentService) GetProfile(ctx context.Context) (*domain.Student, error) {
-	return s.students.GetProfile(ctx)
+func (s *StudentService) GetProfile(ctx context.Context, studentID string) (*domain.Student, error) {
+	return s.students.GetProfile(ctx, studentID)
 }
 
-func (s *StudentService) GetAcademicRecord(ctx context.Context) (*domain.AcademicRecord, error) {
-	return s.students.GetAcademicRecord(ctx)
+func (s *StudentService) GetAcademicRecord(ctx context.Context, studentID string) (*domain.AcademicRecord, error) {
+	return s.students.GetAcademicRecord(ctx, studentID)
 }
 
-func (s *StudentService) GetExamsPassed(ctx context.Context) ([]domain.Exam, error) {
-	return s.exams.GetPassed(ctx)
+func (s *StudentService) GetExamsPassed(ctx context.Context, studentID string) ([]domain.Exam, error) {
+	return s.exams.GetPassed(ctx, studentID)
 }
 
-func (s *StudentService) GetExamsUpcoming(ctx context.Context) ([]domain.UpcomingExam, error) {
-	return s.exams.GetUpcoming(ctx)
+func (s *StudentService) GetExamsUpcoming(ctx context.Context, studentID string) ([]domain.UpcomingExam, error) {
+	return s.exams.GetUpcoming(ctx, studentID)
 }
 
-func (s *StudentService) GetStudyPlan(ctx context.Context) ([]domain.YearPlan, error) {
-	return s.studyPlan.GetStudyPlan(ctx)
+func (s *StudentService) GetStudyPlan(ctx context.Context, studentID string) ([]domain.YearPlan, error) {
+	return s.studyPlan.GetStudyPlan(ctx, studentID)
 }
 
-func (s *StudentService) GetDocuments(ctx context.Context) ([]domain.Document, error) {
-	return s.documents.GetDocuments(ctx)
+func (s *StudentService) GetDocuments(ctx context.Context, studentID string) ([]domain.Document, error) {
+	return s.documents.GetDocuments(ctx, studentID)
 }
 
-func (s *StudentService) GetCalendarEvents(ctx context.Context) ([]domain.CalendarEvent, error) {
-	return s.calendar.GetEvents(ctx)
+func (s *StudentService) GetCalendarEvents(ctx context.Context, studentID string) ([]domain.CalendarEvent, error) {
+	return s.calendar.GetEvents(ctx, studentID)
 }

@@ -34,19 +34,22 @@ and changing one line in `main.go`. Nothing else changes.
 
 ## API Endpoints
 
-Base path: `/api/v1`
+Base path: `/api/v1` · Swagger UI: `http://localhost:8080/swagger/index.html`
 
-| Method | Path                    | Description                        |
-|--------|-------------------------|------------------------------------|
-| GET    | `/api/v1/me`            | Student profile                    |
-| GET    | `/api/v1/me/academic`   | Academic record (GPA, credits, …)  |
-| GET    | `/api/v1/me/exams`      | Passed exams                       |
-| GET    | `/api/v1/me/exams/upcoming` | Upcoming exams                 |
-| GET    | `/api/v1/me/study-plan` | Full study plan grouped by year    |
-| GET    | `/api/v1/me/documents`  | Uploaded documents                 |
-| GET    | `/api/v1/me/calendar`   | Calendar events (exams, deadlines) |
+| Method | Path                                       | Description                        |
+|--------|--------------------------------------------|------------------------------------|
+| GET    | `/students/{studentId}`                    | Student profile                    |
+| GET    | `/students/{studentId}/academic`           | Academic record (GPA, credits, …)  |
+| GET    | `/students/{studentId}/exams`              | Passed exams                       |
+| GET    | `/students/{studentId}/exams/upcoming`     | Upcoming exams                     |
+| GET    | `/students/{studentId}/study-plan`         | Full study plan grouped by year    |
+| GET    | `/students/{studentId}/documents`          | Uploaded documents                 |
+| GET    | `/students/{studentId}/calendar`           | Calendar events (exams, deadlines) |
+| GET    | `/swagger/*`                               | Swagger UI                         |
 
 All responses are `application/json`. Errors follow `{"error": "<message>"}`.
+
+> **Example:** `GET /api/v1/students/S1234567`
 
 ---
 

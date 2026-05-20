@@ -22,7 +22,7 @@ type StudentRepository struct{}
 
 func NewStudentRepository() *StudentRepository { return &StudentRepository{} }
 
-func (r *StudentRepository) GetProfile(_ context.Context) (*domain.Student, error) {
+func (r *StudentRepository) GetProfile(_ context.Context, _ string) (*domain.Student, error) {
 	s := domain.Student{
 		Name:           "Anita",
 		Surname:        "Liberatore",
@@ -45,7 +45,7 @@ func (r *StudentRepository) GetProfile(_ context.Context) (*domain.Student, erro
 	return &s, nil
 }
 
-func (r *StudentRepository) GetAcademicRecord(_ context.Context) (*domain.AcademicRecord, error) {
+func (r *StudentRepository) GetAcademicRecord(_ context.Context, _ string) (*domain.AcademicRecord, error) {
 	rec := domain.AcademicRecord{
 		Program:   "Ingegneria Informatica",
 		Degree:    "Laurea Triennale (L-8)",
@@ -66,7 +66,7 @@ type ExamRepository struct{}
 
 func NewExamRepository() *ExamRepository { return &ExamRepository{} }
 
-func (r *ExamRepository) GetPassed(_ context.Context) ([]domain.Exam, error) {
+func (r *ExamRepository) GetPassed(_ context.Context, _ string) ([]domain.Exam, error) {
 	return []domain.Exam{
 		{Course: "Algoritmi e Strutture Dati", Area: "Inf.", Date: "Jan 18, 2024", Grade: 30, Lode: true, Credits: 9, Year: 3},
 		{Course: "Basi di Dati", Area: "Inf.", Date: "Jun 20, 2023", Grade: 28, Lode: false, Credits: 9, Year: 2},
@@ -77,7 +77,7 @@ func (r *ExamRepository) GetPassed(_ context.Context) ([]domain.Exam, error) {
 	}, nil
 }
 
-func (r *ExamRepository) GetUpcoming(_ context.Context) ([]domain.UpcomingExam, error) {
+func (r *ExamRepository) GetUpcoming(_ context.Context, _ string) ([]domain.UpcomingExam, error) {
 	return []domain.UpcomingExam{
 		{Course: "Sistemi Operativi", Date: "May 28, 2024", Credits: 9, Urgent: true},
 		{Course: "Ingegneria del Software", Date: "Jun 15, 2024", Credits: 9, Urgent: false},
@@ -93,7 +93,7 @@ type StudyPlanRepository struct{}
 
 func NewStudyPlanRepository() *StudyPlanRepository { return &StudyPlanRepository{} }
 
-func (r *StudyPlanRepository) GetStudyPlan(_ context.Context) ([]domain.YearPlan, error) {
+func (r *StudyPlanRepository) GetStudyPlan(_ context.Context, _ string) ([]domain.YearPlan, error) {
 	return []domain.YearPlan{
 		{
 			Year: 1,
@@ -139,7 +139,7 @@ type DocumentRepository struct{}
 
 func NewDocumentRepository() *DocumentRepository { return &DocumentRepository{} }
 
-func (r *DocumentRepository) GetDocuments(_ context.Context) ([]domain.Document, error) {
+func (r *DocumentRepository) GetDocuments(_ context.Context, _ string) ([]domain.Document, error) {
 	return []domain.Document{
 		{Name: "Certificato di iscrizione", Type: "PDF", Size: "245 KB", Date: "15 ott 2023", Status: "Verified"},
 		{Name: "Piano di studi 2023/24", Type: "PDF", Size: "128 KB", Date: "5 set 2023", Status: "Verified"},
@@ -157,7 +157,7 @@ type CalendarRepository struct{}
 
 func NewCalendarRepository() *CalendarRepository { return &CalendarRepository{} }
 
-func (r *CalendarRepository) GetEvents(_ context.Context) ([]domain.CalendarEvent, error) {
+func (r *CalendarRepository) GetEvents(_ context.Context, _ string) ([]domain.CalendarEvent, error) {
 	return []domain.CalendarEvent{
 		{Course: "Sistemi Operativi", Type: domain.EventTypeExam, Date: "May 28, 2024", Time: "09:00", Room: "Aula A1", Urgent: true},
 		{Course: "Ingegneria del Software", Type: domain.EventTypeDeadline, Date: "Jun 5, 2024", Time: "23:59", Urgent: true},
